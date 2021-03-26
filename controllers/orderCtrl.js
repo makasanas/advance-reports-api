@@ -138,16 +138,22 @@ module.exports.updateOrder = async (req, res) => {
   try {
     // let shopUrl = req.get('x-shopify-shop-domain');
     shopUrl = 'dev-srore.myshopify.com';
-
-    // let user = shopUrl;
-    // // let shopUrl = 'dev-srore.myshopify.com';
-
-    // // const rules = await commonModel.find('rules', { shopUrl: shopUrl });
-    // // user based find query
-    // rcResponse.data = await commonModel.findOneAndUpdate('order', {
-    //   orderId: req.body.id,
-    //   userId: user._id,
-    // });
+    let user = await commonModel.findOne('user', { shopUrl: shopUrl });
+    rcResponse.data = await commonModel.findOneAndUpdate(
+      'order',
+      {
+        orderId: req.body.id,
+        userId: user._id,
+      },
+      {
+        $set: {
+          userId: user._id,
+          orderId: req.body.id,
+          shopUrl: user.shopUrl,
+          shopifyData: req.body,
+        },
+      }
+    );
   } catch (err) {
     throw err;
   }
