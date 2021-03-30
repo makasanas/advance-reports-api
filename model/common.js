@@ -1,11 +1,9 @@
 module.exports.user = require('./../schema/user');
-module.exports.product = require('./../schema/product');
 module.exports.activePlan = require('./../schema/activePlan');
 module.exports.emailNotification = require('./../schema/emailNotification');
 module.exports.deletedUser = require('./../schema/deletedUser');
 module.exports.admin = require('./../schema/admin');
 module.exports.contact = require('./../schema/contact');
-module.exports.rules = require('./../schema/rules');
 module.exports.order = require('./../schema/order');
 module.exports.syncDetail = require('./../schema/syncDetail');
 
@@ -120,22 +118,6 @@ module.exports.findWithCount = async (collection, query, skip, limit, sort) => {
         // },
       },
       { $sort: sort },
-      {
-        $facet: {
-          products: [{ $skip: skip }, { $limit: limit }],
-          count: [
-            {
-              $count: 'count',
-            },
-          ],
-        },
-      },
-      {
-        $project: {
-          [collection]: '$products',
-          count: { $arrayElemAt: ['$count.count', 0] },
-        },
-      },
     ]);
   } catch (err) {
     throw err;

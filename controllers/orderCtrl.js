@@ -38,7 +38,6 @@ module.exports.getAllOrders = async (
   rcResponse
 ) => {
   try {
-    console.log(next);
     if (next) {
       var orderData = await handleshopifyRequest(
         'get',
@@ -48,8 +47,6 @@ module.exports.getAllOrders = async (
       let pagination = await getPaginationLink(orderData);
 
       let orders = [];
-
-      console.log('lenght', orderData.body.orders.length);
 
       orderData.body.orders.forEach(order => {
         let data = {};

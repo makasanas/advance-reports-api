@@ -16,10 +16,7 @@ const checkPlan = require('./../middlewares/checkPlan');
 const cronCtrl = require('./../controllers/cronCtrl');
 const shopifyCtrl = require('./../controllers/shopifyCtrl');
 const recurringCtrl = require('./../controllers/recurringCtrl');
-const productCtrl = require('./../controllers/productCtrl');
 const contactCtrl = require('./../controllers/contactCtrl');
-const tagsCtrl = require('./../controllers/tagsCtrl');
-const rulesCtrl = require('./../controllers/rulesCtrl');
 const orderCtrl = require('./../controllers/orderCtrl');
 
 /*****************************
@@ -47,20 +44,6 @@ router.post(
   '/recurring/plan/active/:planId',
   checkToken.validateToken,
   recurringCtrl.activePlan
-);
-
-/*****************************
-  Product Get
- *****************************/
-
-router.get('/products', checkToken.validateToken, productCtrl.get);
-
-router.get('/collections', checkToken.validateToken, productCtrl.getCollection);
-
-router.get(
-  '/getproductcount',
-  checkToken.validateToken,
-  productCtrl.getProductCount
 );
 
 /*****************************
@@ -140,20 +123,6 @@ router.put('/appStatus', checkToken.validateToken, shopifyCtrl.changeAppStatus);
 /*****************************
  Rules
  *****************************/
-
-router.post('/addNewRule', checkToken.validateToken, rulesCtrl.addNewRule);
-
-router.put('/updateRule', checkToken.validateToken, rulesCtrl.updateRule);
-
-router.get(
-  '/allRules',
-  checkToken.validateToken,
-  rulesCtrl.getAllRulesByShopUrl
-);
-
-router.post('/generateTags', checkToken.validateToken, tagsCtrl.generateTags);
-
-router.delete('/rule/:id', checkToken.validateToken, rulesCtrl.deleteRuleById);
 
 router.get('/sync/orders', checkToken.validateToken, orderCtrl.syncOrders);
 
