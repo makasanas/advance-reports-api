@@ -110,8 +110,8 @@ createShop = async (shop, productCount, shopData) => {
         accessToken: shopData.accessToken,
         scope: shopData.scope,
         orderCount: 0,
-        recurringPlanName: 'Free',
-        recurringPlanType: 'Free',
+        recurringPlanName: 'Premium100',
+        recurringPlanType: 'paid',
         trial_days: trial_days,
       },
     };
@@ -127,7 +127,7 @@ createShop = async (shop, productCount, shopData) => {
     let plan = {
       shopUrl: shop.myshopify_domain,
       userId: user._id,
-      planName: 'Free',
+      planName: 'Premium100',
       planPrice: 0,
       status: 'active',
       type: 'monthly',
@@ -138,7 +138,7 @@ createShop = async (shop, productCount, shopData) => {
       ),
       chargeInfo: {
         startDate: new Date(utc),
-        planName: 'Free',
+        planName: 'Premium100',
         planPrice: 0,
       },
     };
