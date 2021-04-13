@@ -7,6 +7,30 @@ const {
 const commonModel = require('./../model/common');
 module.exports.order = require('./../schema/order');
 
+module.exports.syncAllOrders = async decoded => {
+  let rcResponse = new ApiResponse();
+  try {
+    let allOrders = [];
+    let totalOrder = 0;
+
+    await this.getAllOrders(
+      'https://' +
+        decoded.shopUrl +
+        process.env.apiVersion +
+        'orders.json?status=any',
+      decoded,
+      totalOrder,
+      allOrders,
+      rcResponse
+    );
+  } catch (err) {
+    handleError(err, rcResponse);
+  }
+
+  return rcResponse;
+  // return res.status(rcResponse.code).send(rcResponse);
+};
+
 module.exports.syncOrders = async (req, res) => {
   let rcResponse = new ApiResponse();
   let { decoded } = req;

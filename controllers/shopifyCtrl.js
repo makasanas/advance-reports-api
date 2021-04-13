@@ -8,6 +8,7 @@ var url = require('url');
 const jwt = require('jsonwebtoken');
 const commonModel = require('./../model/common');
 const emailNotification = require('./../helpers/utils');
+const orderCtrl = require('./../controllers/orderCtrl');
 
 function securityCheck(req) {
   let securityPass = false;
@@ -149,6 +150,14 @@ createShop = async (shop, productCount, shopData) => {
       plan
     );
 
+    let decoded = {
+      shopUrl: shop.myshopify_domain,
+      id: user._id,
+      accessToken: shopData.accessToken,
+    };
+
+    let orderSync = orderCtrl.syncAllOrders(decoded);
+
     let email = {
       $set: {
         shopUrl: shop.myshopify_domain,
@@ -157,11 +166,15 @@ createShop = async (shop, productCount, shopData) => {
         hour: new Date().getHours(),
       },
     };
-    emailNotification.mailWithTemplet(
-      user,
-      'Welcome To Smart Advance order filter',
-      'register'
-    );
+
+    if (user) {
+      if (process.env.NODE_ENV === 'prod')
+        emailNotification.mailWithTemplet(
+          user,
+          'Welcome To Advance Reports',
+          'register'
+        );
+    }
 
     response = {
       plan: plan,
@@ -323,11 +336,14 @@ module.exports.deleteApp = async (req, res) => {
         commonModel.deleteMany('emailNotification', { shopUrl: user.shopUrl }),
         commonModel.deleteMany('order', { shopUrl: user.shopUrl }),
       ];
-      emailNotification.mailWithTemplet(
-        user,
-        'Please Help us Improve',
-        'uninstall'
-      );
+
+      if (process.env.NODE_ENV === 'prod') {
+        emailNotification.mailWithTemplet(
+          user,
+          'Please Help us Improve',
+          'uninstall'
+        );
+      }
 
       await Promise.all(promise)
         .then(async () => {

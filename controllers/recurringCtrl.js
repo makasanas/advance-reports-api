@@ -112,11 +112,7 @@ module.exports.activePlan = async (req, res) => {
         data
       );
 
-      console.log('decoded.id');
-      console.log(decoded.id);
       userData = await commonModel.findOne('user', { _id: decoded.id });
-      console.log('userData');
-      console.log(userData);
       let user = {
         $set: {
           recurringPlanName: updatedPlan.planName,
