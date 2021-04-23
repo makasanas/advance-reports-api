@@ -98,7 +98,7 @@ module.exports.findWithCount = async (collection, query, skip, limit, sort) => {
                   [collection]: "$products",
                   "count": { "$arrayElemAt": ["$count.count", 0] },
               }
-          }
+          } 
       ])
   } catch (err) {
       throw err;
