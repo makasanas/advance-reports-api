@@ -1,4 +1,5 @@
 const { ApiResponse, SetError } = require('./../helpers/common');
+const mongoose = require('mongoose');
 const {
   handleError,
   handleshopifyRequest,
@@ -143,10 +144,19 @@ writeData = async (decoded, totalOrder, allOrders) => {
 
 module.exports.getReport = async (req, res) => {
   let rcResponse = new ApiResponse();
-  let { decoded } = req;
+  let { decoded, body } = req;
+
+  let reqBody = body;
+  let reqMatch = body[0].$match.$and;
+  reqMatch.unshift({
+    userId: mongoose.Types.ObjectId(decoded.id),
+  });
+
+  reqBody[0].$match.$and = reqMatch;
+
   try {
     // user based find query
-    rcResponse.data = await commonModel.groupBy('order', req.body);
+    rcResponse.data = await commonModel.groupBy('order', reqBody);
   } catch (err) {
     throw err;
   }
