@@ -171,7 +171,7 @@ createShop = async (shop, productCount, shopData) => {
       if (process.env.NODE_ENV === 'prod')
         emailNotification.mailWithTemplet(
           user,
-          'Welcome To Advance Reports',
+          'Welcome To Report Guru',
           'register'
         );
     }

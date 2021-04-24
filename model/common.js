@@ -66,7 +66,6 @@ module.exports.findOneAndUpdateNew = async (collection, query, data) => {
 };
 
 module.exports.groupBy = async (collection, query) => {
-  console.log('query', query);
   try {
     return await this[collection].aggregate(query);
   } catch (error) {
