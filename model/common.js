@@ -74,54 +74,85 @@ module.exports.groupBy = async (collection, query) => {
 };
 
 module.exports.findWithCount = async (collection, query, skip, limit, sort) => {
-  // db.getCollection('orders').aggregate([
-  //   {
-  //     $match: {
-  //       $and: [
-  //         {
-  //           $expr: {
-  //             $lte: [{ $toDecimal: '$shopifyData.total_price' }, 400.0],
-  //           },
-  //         },
-  //         {
-  //           $expr: {
-  //             $regexFind: { input: '$shopifyData.email', regex: /alpa/ },
-  //           },
-  //         },
-  //       ],
-  //     },
-  //   },
-  // ]);
   try {
-    return await this[collection].aggregate([
-      {
-        $match: {
-          $and: query,
-        },
-        // '$match' : {
-        //   $and: [
-        //     { $expr: { $lte: [ '$createdAt' , ISODate('2013-07-26T18:23:37.000Z') ] }},
-        //     { $expr: { $gte: [ '$createdAt' , ISODate('2013-07-26T18:23:37.000Z') ] }},
-        //   ]
-        // }
-
-        // $match: {
-        //   $and: [
-        //     {
-        //       $expr: {
-        //         $lte: [{ $toDecimal: '$shopifyData.total_price' }, 400.0],
-        //       },
-        //     },
-        //     { $regexFind: { input: '$shopifyData.email', regex: /ravi/ } },
-        //   ],
-        // },
-      },
-      { $sort: sort },
-    ]);
+      return await this[collection].aggregate([
+          {
+              $match: {
+                  $and: query
+              }
+          },
+          { $sort: sort },
+          {
+              $facet: {
+                  products: [{ $skip: skip }, { $limit: limit }],
+                  count: [
+                      {
+                          $count: 'count'
+                      }
+                  ]
+              }
+          },
+          {
+              "$project": {
+                  [collection]: "$products",
+                  "count": { "$arrayElemAt": ["$count.count", 0] },
+              }
+          } 
+      ])
   } catch (err) {
-    throw err;
+      throw err;
   }
-};
+}
+
+// module.exports.findWithCount = async (collection, query, skip, limit, sort) => {
+//   // db.getCollection('orders').aggregate([
+//   //   {
+//   //     $match: {
+//   //       $and: [
+//   //         {
+//   //           $expr: {
+//   //             $lte: [{ $toDecimal: '$shopifyData.total_price' }, 400.0],
+//   //           },
+//   //         },
+//   //         {
+//   //           $expr: {
+//   //             $regexFind: { input: '$shopifyData.email', regex: /alpa/ },
+//   //           },
+//   //         },
+//   //       ],
+//   //     },
+//   //   },
+//   // ]);
+//   try {
+//     return await this[collection].aggregate([
+//       {
+//         $match: {
+//           $and: query,
+//         },
+//         // '$match' : {
+//         //   $and: [
+//         //     { $expr: { $lte: [ '$createdAt' , ISODate('2013-07-26T18:23:37.000Z') ] }},
+//         //     { $expr: { $gte: [ '$createdAt' , ISODate('2013-07-26T18:23:37.000Z') ] }},
+//         //   ]
+//         // }
+
+//         // $match: {
+//         //   $and: [
+//         //     {
+//         //       $expr: {
+//         //         $lte: [{ $toDecimal: '$shopifyData.total_price' }, 400.0],
+//         //       },
+//         //     },
+//         //     { $regexFind: { input: '$shopifyData.email', regex: /ravi/ } },
+//         //   ],
+//         // },
+//       },
+//       { $sort: sort },
+//     ]);
+//   } catch (err) {
+//     throw err;
+//   }
+// };
 
 // db.getCollection('orders').aggregate([
 //   {
