@@ -57,12 +57,6 @@ module.exports.handleError = async (req, err, rcResponse) => {
   try {
     if (err.type && err.type == 'custom') {
       SetResponse(rcResponse, err.code, ErrMessages[err.message], false);
-    } else if (
-      err.response &&
-      err.response.headers &&
-      err.response.headers['x-shopify-stage']
-    ) {
-      SetResponse(rcResponse, err.statusCode, err.message, false);
     } else {
       if (process.env.NODE_ENV === 'prod') {
         if (req.decoded) {
@@ -75,7 +69,12 @@ module.exports.handleError = async (req, err, rcResponse) => {
       } else {
         console.log(err);
       }
-      SetResponse(rcResponse, 500, ErrMessages['ISE'], false);
+
+      if (err.response && err.response.headers && err.response.headers['x-shopify-stage']) {
+        SetResponse(rcResponse, err.statusCode, err.message, false);
+      } else {
+        SetResponse(rcResponse, 500, ErrMessages['ISE'], false);
+      }
     }
   } catch (err) {
     SetResponse(rcResponse, 500, err.message, false);

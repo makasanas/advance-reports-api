@@ -13,7 +13,7 @@ app.use(function (req, res, next) {
   req.useragent = agent;
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, x-zumo-auth, Content-Length, X-Requested-With, Accept');
+  res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, sentry-trace, x-zumo-auth, Content-Length, X-Requested-With, Accept');
   //intercepts OPTIONS method
   if ('OPTIONS' === req.method) {
     //respond with 200
