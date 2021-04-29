@@ -6,6 +6,12 @@ const request = require('request-promise');
 const pug = require('pug');
 const mailgun = require('mailgun-js');
 const Sentry = require('@sentry/node');
+if (process.env.NODE_ENV === 'prod') {
+  Sentry.init({
+    dsn: process.env.SentryToken,
+    tracesSampleRate: 1.0,
+  });
+}
 
 /* Generate hash for password */
 module.exports.generatePasswordHash = async password => {
@@ -47,7 +53,7 @@ module.exports.comparePassword = async (originalPass, passToMatch) => {
   }
 };
 
-module.exports.handleError = async (err, rcResponse) => {
+module.exports.handleError = async (req, err, rcResponse) => {
   try {
     if (err.type && err.type == 'custom') {
       SetResponse(rcResponse, err.code, ErrMessages[err.message], false);
@@ -59,14 +65,13 @@ module.exports.handleError = async (err, rcResponse) => {
       SetResponse(rcResponse, err.statusCode, err.message, false);
     } else {
       if (process.env.NODE_ENV === 'prod') {
+        if (req.decoded) {
+          Sentry.setUser({ id: req.decoded.id, username: req.decoded.shopUrl });
+        }
+        if (req.body) {
+          Sentry.setContext("body", req.body);
+        }
         Sentry.captureException(err);
-        let mailBody =
-          'ReferenceError Error in somewhere is project\n' + err.stack;
-        this.sendMail(
-          process.env.errorEmail,
-          mailBody,
-          'ReferenceError Error in somewhere is project'
-        );
       } else {
         console.log(err);
       }

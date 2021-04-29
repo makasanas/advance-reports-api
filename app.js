@@ -6,11 +6,6 @@ require('dotenv').config();
 var routes = require('./routes/index');
 var app = express();
 
-if (process.env.NODE_ENV === 'prod') {
-  const Sentry = require('@sentry/node');
-  Sentry.init({ dsn: 'https://8f90c4bbe23e44029a71669b25ce5349@o401113.ingest.sentry.io/5394903' });
-}
-
 // Enable CORS
 // Get user agent and add to the request
 app.use(function (req, res, next) {

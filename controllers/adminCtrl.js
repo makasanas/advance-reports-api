@@ -15,7 +15,7 @@ const commonModel = require('./../model/common');
 //         let sort = { created: -1 };
 //         rcResponse.data = (await commonModel.findWithCount('user', [{}], skip, limit, sort))[0];
 //     } catch (err) {
-//         handleError(err, rcResponse);
+//         handleError(req, err, rcResponse);
 //     }
 //     return res.status(rcResponse.code).send(rcResponse);
 // };
@@ -72,7 +72,7 @@ module.exports.generateAccessToken = async (req, res) => {
 
         rcResponse.data = { 'token': token };
     } catch (err) {
-        handleError(err, rcResponse);
+        handleError(req, err, rcResponse);
     }
     return res.status(rcResponse.code).send(rcResponse);
 };
@@ -88,7 +88,7 @@ module.exports.generateAccessToken = async (req, res) => {
 //         let sort = { created: -1 };
 //         rcResponse.data = (await commonModel.findWithCount('deletedUser', [{}], skip, limit, sort))[0];
 //     } catch (err) {
-//         handleError(err, rcResponse);
+//         handleError(req, err, rcResponse);
 //     }
 //     return res.status(rcResponse.code).send(rcResponse);
 // };

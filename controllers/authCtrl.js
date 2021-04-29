@@ -22,7 +22,7 @@ module.exports.getUserProfile = async (req, res) => {
 		}
 
 	} catch (err) {
-		handleError(err, rcResponse);
+		handleError(req, err, rcResponse);
 	}
 	return res.status(rcResponse.code).send(rcResponse);
 };
@@ -37,7 +37,7 @@ module.exports.checkToken = async (req, res) => {
 			throw SetError({}, 403, 'ShopNotExists');
 		}		
     } catch (err) {
-        handleError(err, rcResponse);
+        handleError(req, err, rcResponse);
 	}
 	
 	return res.status(rcResponse.code).send(rcResponse);

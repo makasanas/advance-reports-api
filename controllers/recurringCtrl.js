@@ -39,7 +39,7 @@ module.exports.create = async (req, res) => {
     );
     rcResponse.data = shopifyResponse.body;
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
   }
   return res.status(rcResponse.code).send(rcResponse);
 };
@@ -52,7 +52,7 @@ module.exports.getPlan = async (req, res) => {
       userId: decoded.id,
     });
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
   }
   return res.status(rcResponse.code).send(rcResponse);
 };
@@ -136,7 +136,7 @@ module.exports.activePlan = async (req, res) => {
       );
     }
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
   }
   return res.status(rcResponse.code).send(rcResponse);
 };
