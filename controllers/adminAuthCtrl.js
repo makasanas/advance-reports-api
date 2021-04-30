@@ -53,7 +53,7 @@ module.exports.login = async(req, res) => {
             throw SetError({}, 403, 'UserNotFound');
         }
     } catch (err) {
-        handleError(err, rcResponse);
+        handleError(req, err, rcResponse);
     }
     return res.status(rcResponse.code).send(rcResponse);
 };
@@ -83,7 +83,7 @@ module.exports.register = async(req) => {
         if (err.code === 11000) {
             throw SetError({}, 400, 'EmailExists');
         } else {
-            // handleError(err, rcResponse);
+            // handleError(req, err, rcResponse);
             throw err;
         }
     }
@@ -100,7 +100,7 @@ module.exports.getUserProfile = async(req, res) => {
     try {
         rcResponse.data = await commonModel.findOne('admin', { _id: decoded.id });
     } catch (err) {
-        handleError(err, rcResponse);
+        handleError(req, err, rcResponse);
     }
     return res.status(rcResponse.code).send(rcResponse);
 

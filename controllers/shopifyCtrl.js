@@ -301,7 +301,7 @@ module.exports.auth = async (req, res, next) => {
     }
     rcResponse.data = await createOrUpdateShop(shopData);
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
   }
   return res.status(rcResponse.code).send(rcResponse);
 };
@@ -354,7 +354,7 @@ module.exports.deleteApp = async (req, res) => {
         });
     }
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
   }
   return res.status(rcResponse.code).send(rcResponse);
 };
@@ -478,7 +478,7 @@ module.exports.getEnabledApp = async (req, res) => {
     }
     rcResponse.data = { app };
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
   }
   return res.status(httpStatus).send(rcResponse);
 };
@@ -499,7 +499,7 @@ module.exports.changeAppStatus = async (req, res) => {
       data
     );
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
   }
   return res.status(rcResponse.code).send(rcResponse);
 };

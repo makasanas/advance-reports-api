@@ -34,7 +34,7 @@ module.exports.uploadMedia = async (req, res) => {
     rcResponse.message = 'Media file has been successfullly uploaded';
     rcResponse.data = { fileName: req.files.file[0].filename }
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
   }
   return res.status(rcResponse.code).send(rcResponse);
 };

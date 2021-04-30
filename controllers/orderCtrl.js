@@ -25,7 +25,7 @@ module.exports.syncAllOrders = async decoded => {
       rcResponse
     );
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
   }
 
   return rcResponse;
@@ -50,7 +50,7 @@ module.exports.syncOrders = async (req, res) => {
       rcResponse
     );
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
   }
   return res.status(rcResponse.code).send(rcResponse);
 };

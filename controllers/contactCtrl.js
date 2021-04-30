@@ -14,7 +14,7 @@ module.exports.creat = async (req, res) => {
         });
         await sendMail('makasanas@yahoo.in', mailBody, "Contact Us From in side App");
     } catch (err) {
-        handleError(err, rcResponse);
+        handleError(req, err, rcResponse);
     }
 
     return res.status(rcResponse.code).send(rcResponse);

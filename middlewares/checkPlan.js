@@ -16,7 +16,7 @@ module.exports.isValidPlan = async (req, res, next) => {
             next();
         }
     } catch (err) {
-        handleError(err, rcResponse);
+        handleError(req, err, rcResponse);
         return res.status(rcResponse.code).send(rcResponse);
     }
 };

@@ -25,7 +25,7 @@ exports.validateToken = function (req, res, next) {
       throw SetError({}, 403, 'InvalidToken');
     }
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
     return res.status(rcResponse.code).send(rcResponse);
   }
 };
@@ -52,7 +52,7 @@ module.exports.validateAcessToken = function (req, res, next) {
       next();
     }
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
     return res.status(rcResponse.code).send(rcResponse);
   }
 };
@@ -68,7 +68,7 @@ module.exports.isAdminUser = async (req, res, next) => {
       next();
     }
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
     return res.status(rcResponse.code).send(rcResponse);
   }
 };
@@ -86,7 +86,7 @@ module.exports.validateWebhook = async (req, res, next) => {
       throw SetError({}, 403, 'RequestNotFromShopify');
     }
   } catch (err) {
-    handleError(err, rcResponse);
+    handleError(req, err, rcResponse);
     return res.status(rcResponse.code).send(rcResponse);
   }
 }
